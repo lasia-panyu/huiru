@@ -1,0 +1,33 @@
+{
+	"bsonType": "object",
+	"required": [
+		"title",
+		"content"
+	],
+	"permission": {
+		"read": true, // 任何用户都可以读
+		"create": false, // 禁止新增数据记录（admin权限用户不受限）
+		"update": false, // 禁止更新数据（admin权限用户不受限）
+		"delete": false, // 禁止删除数据（admin权限用户不受限）
+		"count": false // 禁止查询数据条数（admin权限用户不受限），新增于HBuilderX 3.1.0
+	},
+	"properties": {
+		"_id": {
+			"description": "存储文档 ID（用户 ID），系统自动生成"
+		},
+		"title": {
+			"bsonType": "string",
+			"title": "标题",
+			"description": "标题",
+			"label": "标题",
+			"trim": "both"
+		},
+		"content": {
+			"bsonType": "string",
+			"title": "文章内容",
+			"description": "文章内容",
+			"label": "文章内容",
+			"trim": "right"
+		}
+	}
+}

@@ -1,0 +1,17 @@
+{
+	"cloudfunction-config": {
+		"memorySize": 128,
+		"timeout": 5,
+		"triggers": [
+			{
+				"name": "myTrigger",
+				"type": "timer",
+				"config": "0 0 9 * * * *"
+			}
+		],
+		"path": ""
+	},
+	"dependencies": {
+		"uni-id": "file:../../../uni_modules/uni-id/uniCloud/cloudfunctions/common/uni-id"
+	}
+}

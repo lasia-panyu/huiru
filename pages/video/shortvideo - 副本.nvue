@@ -1,0 +1,360 @@
+<template>
+	<div class="page">
+		<div class="cover-view-center" v-if="distanceX==0">
+			<div :style="{ height: `${sysheight-60}px`,width: width }" ref="touch" @click="clickVideo(index)" @touchstart="ListTouchStart" @touchmove="ListTouchMove">
+				<div class="cover-view-right" v-if="distanceX==0">
+					<image class="img" @click.stop="tapAvater"></image>
+					<text class="right-text"> </text>
+					<image class="img" @click.stop="tapLove"></image>
+					<text class="right-text"> </text>
+					<image class="img" @click.stop="tapMsg"></image>
+					<text class="right-text"> </text>
+					<image class="img" @click.stop="tapShare"></image>
+					<text class="right-text"> </text>
+				</div>
+			</div>
+		</div>
+		<block v-if="active"> 
+		<div class="swiper" ref="swiper">
+			<block v-for="(item, idx) in videoList" :key="idx">
+				<div class="video-box" :style="{ height: height }">
+					<!-- 视频渲染数预加载数影响性能 -->
+					<!-- <block v-if="Math.abs(index-idx)<=1"> -->
+			
+						<chunlei-video class="video" :src="item.src"  :height="height" :width="width" 
+							:play="item.flag" :gDuration="item.duration" :objectFit="item.objectFit"
+							:initialTime="item.initialTime" @pause="pauseVideo" :rotateImg="`//static/avatar.png`" :danmuList="danmuList"
+						>
+						</chunlei-video>
+						<cover-view class="cover-view-left">
+							<text class="left-text">@{{item.at}}</text>
+							<text class="left-text">{{item.content}}</text>
+						</cover-view>
+						<cover-view class="cover-view-right">
+							<cover-image :src="item.avater" class="avater img" @click.stop="tapAvater"></cover-image>
+							<text class="right-text-avater">+</text>
+							<text class="right-text"></text>
+							<cover-image :src="item.check?'../../static/aixinRed.png':'../../static/aixin.png'" class="img" @click.stop="tapLove"></cover-image>
+							<text class="right-text">{{item.like}}</text>
+							<cover-image src="../../static/xiaoxi.png" class="img" @click.stop="tapMsg"></cover-image>
+							<text class="right-text">{{item.comment}}</text>
+							<cover-image src="../../static/share-fill.png" class="img" @click.stop="tapShare"></cover-image>
+							<text class="right-text">分享</text>
+						</cover-view>
+						
+				
+				</div>
+				
+			</block>
+		</div>
+		</block>
+		
+		<div class="left-div" :style="{ height: height,width: width,left:`${-parseInt(width)}px` }" ref="left"  @touchstart="ListTouchStart" @touchmove="ListTouchMove">
+			<text class="title-text" @click="clickbt">{{videoList[index].at}}</text>
+		</div>
+		<div class="right-div" :style="{ height: height,width: width,right:`${-parseInt(width)}px` }" ref="right"  @touchstart="ListTouchStart" @touchmove="ListTouchMove">
+			<text class="title-text">{{videoList[index].content}}</text>
+		</div>
+		
+	</div>
+</template>
+
+<script>
+	import chunleiVideo from '../../components/chunlei-video/chunlei-video';
+	import scrollMixins from './scrollMixins';
+	const BindingX = uni.requireNativePlugin('bindingx');
+	const animation = weex.requireModule('animation');
+	const modal = weex.requireModule('modal');
+
+	export default { 
+		mixins:[scrollMixins],
+		components:{
+			chunleiVideo
+		},
+		data(){
+			return{
+				danmuList:[
+					{text: '发条弹幕0',color: '#fff',time: 2,avatar:'../../static/avatar.png'}
+				],
+				videoList:[],
+				videos:[],
+				videoscur:0,
+				active:true
+			}
+		},
+		created(){
+			this.init()
+			//隐藏subnvue
+			uni.getSubNVueById('comment').hide()
+			uni.getSubNVueById('input-box').hide()
+		},
+		onLoad(){
+			let index = uni.getStorageSync('index');
+			console.log(index)
+			let video = uni.getStorageSync('shortVideoList');
+			console.log(video.length)
+						video.map(x=>{
+							x.src=x.videoPath;
+							x.content=x.title;
+							x.flag=false;
+							x.check=false;
+							x.like='7w';
+							x.comment='1045';
+							x.avater='http://img.kaiyanapp.com/7af2bb1bc134fb1115d48f05e9d317f0.jpeg?imageMogr2/quality/60/format/jpg',
+					        x.at=x.author_Name;
+							x.duration=1162;
+						});
+						if(video.length-index>3){
+							this.videoList=video.slice(index,index+3);
+							this.videos=video.slice(index+3,video.length).concat(video.slice(0,index));
+						}else{
+							this.videoList=video.slice(index,index+3);
+							let i=0;
+							while(this.videoList.length<3){		
+								if(i>=this.videos.length){
+									  i=0;
+								}							  
+								this.videoList.push(video[i]);
+								i++;
+							}
+							if(video.length<3){
+								this.videos=video;
+							}else{
+								this.videos=video.slice(i,index);
+							}
+
+							    
+						}
+			console.log("~~~~~~~~~~~~~~~~~~");
+			console.log(this.videos);
+			console.log(this.videoList);
+		},
+		async mounted() {
+			//this.videoPlay(this.index)
+			// await this.pushVideoList()
+			// this.$nextTick(()=>{
+			// 	this.videoPlay(this.index)
+			// })
+			
+			
+		},
+		onShow(){
+			this.videoPlay(this.index)
+		},
+		onHide(){
+			for (let item of this.videoList) {
+				item.flag = false
+			}
+		},
+		methods:{
+			clickbt(){
+				console.log(11)
+			},
+			//设置参数
+			init(){
+				this.typeX = false //开启左右滑动
+				this.playCount = 1 //剩余多少视频加载视频列表
+				this.startDistance = 5 //判断左右上下拖动的启动距离 px
+				this.minTime = 300 //判断快速滑动的时间,该时间内无视回弹距离判断
+				this.backDistance = 200 //判断上下滑动的回弹距离 px
+			},
+			pushVideoList(){
+				console.log('pushVideoList');
+				console.log(this.index);
+                let index=0;
+				this.active=false;
+				if(this.index==0){
+					
+
+				}else if(this.index==2){
+					let videoList=this.videoList.shift();
+					let video=this.videos.shift();
+					this.videoList.push(video);
+					this.videos.push(videoList);
+					console.log(videoList);
+					console.log(video);
+					console.log(this.videoList);
+					console.log(this.videos);
+				    index=1;
+					for (let item of this.videoList) {
+						item.flag = false
+					}
+					console.log(index)
+					this.videoList[index].flag = true;
+					// this.index=index;
+				}
+             
+				this.active=true;
+				// let promise = new Promise((resolve,reject)=>{
+				// 	uni.request({
+				// 		url: 'https://api.apiopen.top/videoRecommend?id=127397',
+				// 		success: (res) => {
+				// 			let videoGroup = []
+				// 			for (let item of res.data.result) {
+				// 				if(item.type == 'videoSmallCard'){
+				// 					videoGroup.push({
+				// 						src:item.data.playUrl,
+				// 						content:item.data.title,
+				// 						flag:false,
+				// 						check:false,
+				// 						like:'7w',
+				// 						comment:'1045',
+				// 						at:item.data.author.name,
+				// 						avater:item.data.author.icon,
+				// 						initialTime:0,
+				// 						duration:item.data.duration
+				// 					})
+				// 				}
+				// 			}
+				// 			this.videoList = [...this.videoList,...videoGroup]
+							
+				// 			resolve()
+				// 		}
+				// 	})
+				// }) 
+				// return promise
+			},
+			tapLove(e){
+				e.stopPropagation();
+				if(this.distanceX!=0) return
+				this.videoList[this.index].check = !this.videoList[this.index].check
+				this.videoList = [...this.videoList]
+			},
+			tapAvater(e){
+				e.stopPropagation();
+				if(this.distanceX!=0) return
+				uni.showToast({
+					icon:'none',
+					title:`点击索引为${this.index}的头像`
+				})
+			},
+			tapMsg(e){
+				e.stopPropagation();
+				if(this.distanceX!=0) return
+				uni.getSubNVueById('comment').show('none',0,()=>{
+					uni.$emit('showComment',this.videoList[this.index].content)
+				});
+			},
+			tapShare(e){
+				e.stopPropagation();
+				if(this.distanceX!=0) return
+				uni.showToast({
+					icon:'none',
+					title:`分享索引为${this.index}的视频`
+				})
+			},
+		}
+	}
+</script>
+
+<style lang="scss" scoped>
+	.page{
+		flex: 1;
+		overflow: hidden;
+		position: relative;
+	}
+	.swiper{
+		position: relative;
+		background-color: #000;
+	}
+	.left-div{
+		position: absolute;
+		top: 0;
+		justify-content: center;
+		align-items: center;
+	}
+	.right-div{
+		position: absolute;
+		top: 0;
+		justify-content: center;
+		align-items: center;
+	}
+	.title-text{
+		font-size: 16px;
+		color: #000000;
+	}
+	.video-box{
+		position: relative;
+		background-color: #000;
+	}
+	.cover-view-center{
+		
+		position: fixed;
+		justify-content: center;
+		align-items: center;
+		
+		z-index: 999;
+	}
+	.cover-view-top{
+		position: fixed;
+		width: 750rpx;
+		height: 150px;
+		overflow: hidden;
+	}
+	.cover-view-left{
+		position: absolute;
+		margin-left: 10upx;
+		width: 500upx;
+		bottom: 200upx;
+		z-index: 9999;
+		font-size: 16px;
+		color: #FFFFFF;
+	}
+	.left-text{
+		font-size: 16px;
+		color: #FFFFFF;
+		margin-bottom: 20upx;
+	}
+	.avater{
+		border-radius: 50upx;
+		border-color: #fff;
+		border-style: solid;
+		border-width: 2px;
+	}
+	
+	.cover-view-right{
+		position: absolute;
+		top: 400upx;
+		right: 20upx;
+		z-index: 9999;
+	}
+	.right-text-avater{
+		position: absolute;
+		font-size: 14px;
+		top: 80upx;
+		left: 30upx;
+		height: 40upx;
+		width: 40upx;
+		background-color: #DD524D;
+		color: #FFFFFF;
+		border-radius: 50%;
+		text-align: center;
+		line-height: 40upx;
+		z-index: 999;
+	}
+	
+	.avater-icon{
+		height: 40upx;
+		width: 40upx;
+		
+		color: #fff;
+		background-color: #DD524D;
+		border-radius: 50%;
+		position: absolute;
+		left: 30upx;
+		top:-20upx;
+	}
+	
+	.right-text{
+		text-align: center;
+		font-size: 14px;
+		color: #FFFFFF;
+		margin-bottom: 50upx;
+		height: 20px;
+	}
+	.img{
+		height: 100upx;
+		width: 100upx;
+		opacity: 0.9;
+	}
+</style>

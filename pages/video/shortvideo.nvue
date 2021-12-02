@@ -1,0 +1,394 @@
+<template>
+	<view class="container">
+		<list @loadmore="getData()" :loadmoreoffset="wHeight*3" :show-scrollbar="false" ref="listBox"
+			:pagingEnabled="true" :scrollable="true">
+			<cell v-for="(item,i) in dataList" :key="i">
+				<div ref="item" class="item" :style="boxStyle">
+					<jVideo v-if="Math.abs(k-i)<=1" :state="item.state" :src="item.videoPath" :boxStyle="boxStyle">
+					</jVideo>
+					<view class="videoHover" v-if="1" @click="tapVideoHover(item.state,$event)" :style="boxStyle">
+						<image v-if="item.state=='pause'" class="playState" src="../../static/play.png"></image>
+					</view>
+					<view class="userInfo" @appear="k=i">
+						<image class="userAvatar" src="https://fuyin.fuxinbank.com:10054/newsPaper/221.png"></image>
+						<view class="like" @click="cLike(item,i)">
+							<image v-if="item.like" class="likeIco" style="color:red;"
+								src="../../static/aixinRed.png" />
+							<image v-else class="likeIco" src="../../static/aixin.png" />
+							<text class="likeNum"
+								:class="{'likeNumActive':item.like}">{{item.newsCorrelations.dzCount}}</text>
+						</view>
+						<view class="comment" @click="toComment(item,i)">
+							<image class="commentIco" src="../../static/xiaoxi.png"></image>
+							<text class="commentNum">{{item.newsCorrelations.plCount}}</text>
+						</view>
+						<view class="share" @click="share">
+							<image src="../../static/share-fill.png" class="shareIco" @click.stop="tapShare">
+								</cover-image>
+								<text class="shareTex">分享</text>
+						</view>
+					</view>
+					<view class="content">
+						<text class="userName">{{item.title}}</text>
+						<text class="words">{{item.author_Name}}</text>
+					</view>
+				</div>
+			</cell>
+		</list>
+	</view>
+</template>
+
+<script>
+	const dom = weex.requireModule('dom');
+	const BindingX = uni.requireNativePlugin('bindingx');
+	import jVideo from './j-video.nvue';
+	export default {
+		components: {
+			jVideo
+		},
+		data: {
+			dataList: [],
+			scrollTop: 0,
+			oldScrollTop: 0,
+			wHeight: 0,
+			boxStyle: {
+				'height': 0,
+				'width': '750upx',
+			},
+			k: 0,
+			playIngIds: [], //正在播放的视频id列队，列队用于处理滑动过快导致的跳频问题
+			ready: false,
+			video: [],
+			vindex: 0,
+			commentindex: 0,
+			account: {},
+			//isDragging:false//用户是否正在拖动列表
+		},
+		watch: {
+
+			async k(k, old_k) {
+				// if(!this.dataList[k].comments){
+				// 	this.dataList[k].comments=await this.post('comment/commentSels',{content_Id:video[index],server_Name:'NewsPaper'});
+				// 	this.dataList[k].newsCorrelations=await this.post('newsPaper/newsCorrelations',{news_Id:this.video[index]});
+
+				// }
+				console.log("k!" + k)
+				console.log("old_k!" + old_k)
+				this.dataList[k].state = 'play'
+				this.dataList[old_k].state = 'stop'
+			},
+		},
+		onShow() {
+			console.log('回到前台');
+		},
+		onHide() {
+			console.log('到后台');
+			//this.$refs.video[this.k].pause();
+		},
+		destroyed() {
+			uni.$off('comment')
+		},
+		async onLoad() {
+			uni.$on('comment', this.comment)
+			uni.getSubNVueById('comment').hide();
+			uni.getSubNVueById('input-box').hide();
+			let index = uni.getStorageSync('index');
+			this.account = uni.getStorageSync('account');
+			console.log(index);
+			this.vindex = index;
+			let video = uni.getStorageSync('shortVideoList');
+			console.log(video.length);
+			this.video = video.map(x => {
+				x.state = 'pause';
+				return x;
+			});
+			this.wHeight = uni.getSystemInfoSync().windowHeight;
+			this.boxStyle.height = this.wHeight;
+			// console.log(this.wHeight);
+			// console.log(this.$util);
+			// let comments=await this.post('comment/commentSels',{content_Id:video[index],server_Name:'NewsPaper'});
+			// let newsCorrelations=await this.post('newsPaper/newsCorrelations',{news_Id:this.video[index]});
+
+			// console.log(comments);
+			// console.log(newsCorrelations);
+			// let tmpVideo=video[index];
+			// tmpVideo.comments=comments;
+			// tmpVideo.newsCorrelations=newsCorrelations;
+			// console.log(tmpVideo);
+			// this.video[this.index]=tmpVideo;
+			this.getData(e => {
+				//this.$refs.video[0].play();
+				this.dataList[0].state = 'play';
+				console.log(this.dataList[0]);
+				this.ready = true;
+			});
+
+		},
+		onReady() {},
+		methods: {
+			post(url, param) {
+				return new Promise((resolve, reject) => {
+					uni.showLoading({
+						title: "请求中"
+					});
+					uni.request({
+						url: 'https://fuyin.fuxinbank.com:10058/PanguService/' + url, //仅为示例，并非真实接口地址。
+						method: 'POST',
+						data: param,
+						header: {
+							'content-type': 'application/x-www-form-urlencoded', // 默认值
+						},
+						success: (res) => {
+							console.log(res);
+							resolve(res.data)
+						},
+						fail: (res) => {
+							uni.hideLoading();
+							console.log(res);
+							uni.showToast({
+								title: '请求失败，请重试!',
+								duration: 3000
+							})
+							reject("err");
+						},
+						complete: (res) => {
+							uni.hideLoading();
+						}
+					});
+				})
+			},
+			cloudFunction(url, action, param) {
+				return new Promise((resolve, reject) => {
+					uniCloud.callFunction({
+						name: url,
+						data: {
+							action: action,
+							param: param,
+						},
+						success(res) {
+							resolve(res.result);
+						},
+						fail(e) {
+							console.log(e)
+						}
+					});
+				})
+			},
+			async getUser() {
+				let result = await this.cloudFunction("uni-id-cf", 'getCurrentUserInfo', {});
+				console.log(22222222222)
+				console.log(result)
+				if (result.code == 0) {
+					return result.userInfo;
+				} else {
+					uni.showToast({
+						title: 'Token超时,请重新登录!',
+						duration: 3000
+					});
+					this.$u.route({
+						url: 'pages/news/news',
+						type: 'redirect',
+					});
+				}
+				console.log(result);
+			},
+			//点击播放&&暂停
+			tapVideoHover(state, event) {
+				console.log('state--', state);
+				if (state == 'play' || state == 'continue') {
+					this.dataList[this.k].state = 'pause';
+				} else {
+					this.dataList[this.k].state = 'continue';
+				}
+			},
+			async comment(item) {
+				console.log(item);
+				let userInfo = await this.getUser(this);
+				console.log(userInfo)
+				let param = {
+					// content:commentOwn[0],
+					content: item.val,
+					server_Name: 'NewsPaper',
+					teller_Id: userInfo._id,
+					teller_Name: userInfo.nickname,
+					content_Id: item.post_Id
+				}
+				let result = await this.post('commentIns', param);
+				console.log(this.dataList);
+				console.log(this.commentindex);
+				console.log(this.dataList[this.commentindex]);
+				this.dataList[this.commentindex].newsCorrelations.plCount = parseInt(this.dataList[this.commentindex]
+					.newsCorrelations.plCount) + 1;
+
+			},
+			toComment(item, index) {
+				console.log(index);
+				this.commentindex = index;
+				console.log(this.commentindex);
+				uni.setStorageSync('videoItem', item);
+				// uni.showToast({
+				// 	title:'抽屉式评论区域，敬请期待',
+				// 	icon:'none'
+				// })
+				uni.getSubNVueById('comment').show('none', 0, () => {
+					uni.$emit('showComment', item)
+				});
+				console.log("end");
+			},
+			share() {
+				uni.showToast({
+					title: '分享功能，敬请期待',
+					icon: 'none'
+				})
+			},
+			async cLike(item, index) {
+				console.log(item)
+				let userInfo = await this.getUser(this);
+				let param = {
+					server_Name: 'NewsPaper',
+					teller_Id: userInfo._id,
+					teller_Name: this.account.name,
+					content_Id: item.post_Id,
+					content: item.title
+				}
+				console.log(param)
+				if (!item.like) {
+					item.newsCorrelations.dzCount = parseInt(item.newsCorrelations.dzCount) + 1;
+					let result = await this.post('agreeIns', param);
+					console.log(result);
+					// this.toast(this.$refs,"点赞成功！",true,'success');
+				} else {
+					console.log("2")
+					item.newsCorrelations.dzCount = parseInt(item.newsCorrelations.dzCount) - 1;
+					let result = await this.post('agreeDel', param);
+					console.log(result);
+					// this.$util.toast(this.$refs,"取消点赞！",true,'success');
+				}
+				item.like = !item.like;
+				this.dataList[index] = item;
+			},
+			getData(callback = e => {}) {
+				for (let i = 0; i < 5; i++) {
+					if (this.vindex >= this.video.length)
+						this.vindex = 0;
+					this.dataList.push(this.video[this.vindex])
+					this.vindex += 1;
+
+					// this.dataList.push({
+					// 	title:"温州威客网络科技有限公司",
+					// 	msg:"一家专业uniapp开发（nvue，uniapp模式）的软件外包公司",
+					// 	state : 'pause',
+					// 	like :  i%2>0,
+					// 	like_n : i,
+					// 	src : 'https://cloud.video.taobao.com//play/u/1768198696/p/1/e/6/t/1/239439242603.mp4',
+					// 	videoImg : ''
+					// });
+				}
+				setTimeout(e => { //模拟接口请求时间为1秒
+					callback()
+				}, 1000);
+			}
+		}
+	}
+</script>
+
+<style lang="scss" scoped>
+	.container {
+		flex: 1;
+		background-color: #eeeeee;
+	}
+
+	.item {
+		width: 750upx;
+		background-color: #000000;
+		align-items: center;
+		justify-content: center;
+		position: relative;
+	}
+
+	.videoHover {
+		position: absolute;
+		top: 0;
+		left: 0;
+		flex: 1;
+		background-color: rgba(0, 0, 0, 0.1);
+		justify-content: center;
+		align-items: center;
+
+		/* border-style: dashed;
+		border-color: #DD524D;
+		border-width: 1px; */
+	}
+
+	.playState {
+		width: 80upx;
+		height: 80upx;
+	}
+
+	.userInfo {
+		position: absolute;
+		bottom: 250upx;
+		right: 15px;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+
+	}
+
+	.userAvatar {
+		border-radius: 500%;
+		margin-bottom: 15px;
+		border-style: solid;
+		border-width: 2px;
+		border-color: #ffffff;
+	}
+
+	.userAvatar {
+		width: 90upx;
+		height: 90upx;
+	}
+
+	.likeIco,
+	.shareIco,
+	.commentIco {
+		width: 60upx;
+		height: 60upx;
+		margin-top: 15px;
+	}
+
+	.likeNum,
+	.commentNum,
+	.shareTex {
+		color: #ffffff;
+		font-size: 30upx;
+		text-align: center;
+		margin: 5px;
+	}
+
+	.likeNumActive {
+		color: red;
+	}
+
+	.content {
+		width: 720upx;
+		z-index: 99;
+		position: absolute;
+		bottom: 10px;
+		justify-content: center;
+		padding: 15upx;
+		flex-direction: column;
+		justify-content: flex-start;
+		color: #ffffff;
+	}
+
+	.userName {
+		font-size: 30upx;
+		color: #ffffff;
+	}
+
+	.words {
+		margin-top: 10upx;
+		font-size: 30upx;
+		color: #ffffff;
+	}
+</style>

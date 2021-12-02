@@ -1,0 +1,104 @@
+<template>
+	<view>
+		<live-pusher id="livePusher" :url="url" :enable-camera="enableCamera" :mode="mode" :device-position="devicePosition"
+		 :orientation="orientation" :muted="muted" :beauty="beauty" :whiteness="whiteness" :remote-mirror="remoteMirror"
+		 :auto-focus="autoFocus" :zoom="zoom" :style="{height: windowHeight,width:windowWidth}" @statechange="statechange" @netstatus="netstatus"
+		 @error="error"></live-pusher>
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+				url: '',
+				enableCamera: true,
+				pusher: null,
+				isPushing: false,
+				windowHeight: '0px',
+				windowWidth: '0px',
+				orientation: 'vertical',
+				devicePosition: 'front',
+				mode: 'FHD',
+				muted: false,
+				beauty: 0,
+				whiteness: 0,
+				zoom: true,
+				autoFocus: true,
+				remoteMirror: true
+			};
+		},
+		onLoad(options) {
+			this.url = options.push_url
+			this.orientation = options.orientation
+			this.devicePosition = options.devicePosition
+			this.mode = options.mode
+			this.beauty = options.beauty / 10
+			this.whiteness = options.whiteness / 10
+			this.zoom = options.zoom
+			this.autoFocus = options.autoFocus
+		},
+		onReady() {
+			this.windowHeight = uni.getSystemInfoSync().windowHeight + 'px';
+			this.windowWidth = uni.getSystemInfoSync().windowWidth + 'px';
+			console.log(this.windowWidth);
+			this.pusher = uni.createLivePusherContext('livePusher', this);
+			this.pusher.startPreview()
+			uni.$on('onStart', this.onStart)
+			uni.$on('onSwitchCamera', this.onSwitchCamera)
+			uni.$on('onMuted', this.onMuted)
+		},
+		methods: {
+			onStart() {
+				this.isPushing = !this.isPushing
+				if (this.isPushing) {
+					this.pusher.start()
+				} else {
+					this.pusher.stop({
+						success: () => {
+							this.pusher.startPreview()
+						}
+					})
+				}
+				uni.$emit('switchStartBtn', {
+					startBtn: this.isPushing
+				})
+			},
+			onSwitchCamera() {
+				this.pusher.switchCamera()
+				uni.$emit('switchCameraBtn', {})
+			},
+			onMuted() {
+				this.muted = !this.muted
+				uni.$emit('switchMutedBtn', {
+					mutedBtn: this.muted
+				})
+			},
+			statechange(e) {
+				let detail = e.detail
+				// console.log("状态日志:" + JSON.stringify(detail))
+				uni.$emit("appendLogs", {
+					msg: "状态日志:" + JSON.stringify(detail)
+				});
+			},
+			netstatus(e) {
+				let detail = e.detail
+				// console.log("网络日志:" + JSON.stringify(detail))
+				uni.$emit("appendLogs", {
+					msg: "网络日志:" + JSON.stringify(detail)
+				});
+			},
+			error(e) {
+				let detail = e.detail
+				// console.log("错误日志:" + JSON.stringify(detail))
+				uni.$emit("appendLogs", {
+					msg: "错误日志:" + JSON.stringify(detail)
+				});
+			}
+		}
+	};
+</script>
+
+<style>
+
+</style>

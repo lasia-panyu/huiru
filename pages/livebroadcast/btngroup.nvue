@@ -1,0 +1,92 @@
+<template>
+	<view class="push-btn-group">
+		<view class="push-btn" @click="onStart">
+			<view v-if="!startBtn">
+				<image class="push-btn-img" src="../../static/images/images/start.png" mode=""></image><text class="push-btn-text">开始直播</text>
+			</view>
+			<view v-if="startBtn">
+				<image class="push-btn-img" src="../../static/images/images/suspend.png" mode=""></image><text class="push-btn-text">停止直播</text>
+			</view>
+		</view>
+		<view class="push-btn" @click="onSwitchCamera">
+			<view v-if="!cameraBtn">
+				<image class="push-btn-img" src="../../static/images/images/camera.png" mode=""></image><text class="push-btn-text">切换镜头</text>
+			</view>
+			<view v-if="cameraBtn">
+				<image class="push-btn-img" src="../../static/images/images/camera-gray.png" mode=""></image><text class="push-btn-text">切换镜头</text>
+			</view>
+		</view>
+		<view class="push-btn" @click="onMuted">
+			<view v-if="!mutedBtn">
+				<image class="push-btn-img" src="../../static/images/images/mic.png" mode=""></image><text class="push-btn-text">麦克关闭</text>
+			</view>
+			<viw v-if="mutedBtn">
+				<image class="push-btn-img" src="../../static/images/images/mic-dis.png" mode=""></image><text class="push-btn-text">麦克开启</text>
+			</viw>
+		</view>
+		<view class="push-btn" @click="onLogs">
+			<image class="push-btn-img" src="../../static/images/images/grid.png" mode=""></image><text class="push-btn-text">查看日志</text>
+		</view>
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+				startBtn: false,
+				mutedBtn: false,
+				cameraBtn: false
+			}
+		},
+		onReady() {
+			uni.$on('switchStartBtn', (data) => {
+				this.startBtn = data.startBtn
+			})
+			uni.$on('switchMutedBtn', (data) => {
+				this.mutedBtn = data.mutedBtn
+			})
+			uni.$on('switchCameraBtn', (data) => {
+				this.cameraBtn = !this.cameraBtn
+			})
+		},
+		methods: {
+			onStart() {
+				uni.$emit('onStart', {})
+			},
+			onSwitchCamera() {
+				uni.$emit('onSwitchCamera', {})
+			},
+			onMuted() {
+				uni.$emit('onMuted', {})
+			},
+			onLogs() {
+				const logsNVue = uni.getSubNVueById('push-logs');
+				logsNVue.show()
+			},
+		}
+	}
+</script>
+
+<style>
+	.push-btn-group {
+		display: flex;
+		justify-content: space-around;
+		align-items: center;
+		flex-direction: row;
+	}
+
+	.push-btn {
+		width: 50px;
+	}
+
+	.push-btn-img {
+		width: 50px;
+		height: 50px;
+	}
+
+	.push-btn-text {
+		font-size: 12px;
+		color: #FFFFFF;
+	}
+</style>

@@ -1,0 +1,39 @@
+<template>
+	<view class="push-logs">
+		<text class="log-color" v-for="log in logs">{{log}}</text>
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+				logs: []
+			}
+		},
+		onReady() {
+			uni.$on('appendLogs', (data) => {
+				let logs = this.logs
+				logs.unshift(data.msg)
+				// 最多记录100条
+				if (logs > 100) {
+					logs.pop()
+				}
+				this.logs = logs
+			})
+		},
+		methods: {
+
+		}
+	}
+</script>
+
+<style>
+	.push-logs{
+		padding: 10px;
+	}
+	.log-color {
+		color: #FFFFFF;
+		font-size: 12px;
+	}
+</style>

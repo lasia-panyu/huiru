@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>福音更新：新型肺炎疫情最新动态</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="https://mat1.gtimg.com/news/images/inews/2020/feiyan/18/css/init.css" />
+		<link rel="stylesheet" type="text/css" href="https://mat1.gtimg.com/news/images/inews/2020/feiyan/18/css/style_vp031.css" />
+		<link rel="stylesheet" type="text/css" href="https://mat1.gtimg.com/news/images/inews/2020/feiyan/18/css/styleNews_vp031.css" />
+		<link rel="stylesheet" type="text/css" href="./css/style_vp20200112.css" />
+		<script src="https://mat1.gtimg.com/www/js/libs/bbo.1.1.12.min.js" charset="utf-8"></script>
+		<script src="https://mat1.gtimg.com/yslp/yyh5/mapview/libs/createjs-2015.11.26.min.js"></script>
+		<script src="https://mat1.gtimg.com/www/js/newsapp/jsapi/news.js?_tsid=1"></script>
+		<script src="https://mat1.gtimg.com/news/images/inews/2020/feiyan/18/js/map.js" charset="utf-8"></script>
+		<script type="text/javascript" charset="utf-8" src="https://mat1.gtimg.com/yslp/yyh5/mapview/js/jmap_128.1.js"></script>
+		<script type="text/javascript" charset="utf-8" src="https://mat1.gtimg.com/news/images/inews/2020/zhongxiang/js/diggHtmlNoChange.js"></script>
+		<script src="https://mat1.gtimg.com/news/images/inews/2020/feiyan/18/js/share_news.js" charset="utf-8"></script>
+		<script src="./js/jquery.js" charset="utf-8"></script>
+		<script src="./js/echarts.min.js" charset="utf-8"></script>
+		<link rel="stylesheet" href="./css/swiper.min.css">
+		<script src="./js/swiper.min.js"> </script>
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+				var hm = document.createElement("script");
+				hm.src = "https://hm.baidu.com/hm.js?36bf8d7da89216d7f4fca0041a90c597";
+				var s = document.getElementsByTagName("script")[0];
+				s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body>
+		<div class="option" style="display:none">
+			<div class="count" id="apps_svy_opt_count_23210856_0"></div>
+			<div class="digg" id="apps_svy_opt_title_23210856_0"></div>
+		</div>
+		<div id="scaleContainer">
+
+			<div>
+			<!-- 	<div class="head">
+					<img width="750px" src="./img/top-img.jpg" height="334px">
+				</div> -->
+				<div class="navTabs" id="staticNav">
+					<div class="navTab nmTab active" data-id="nm"><a href="#nm">辽宁疫情</a></div>
+					<div class="navTab chartsTab" data-id="charts"><a href="#charts">全国疫情</a></div>
+					<div class="navTab newsTab" data-id="news"><a href="#news">最新进展</a></div>
+					<div class="navTab rumorTab" data-id="rumor"><a href="#rumor">辟谣信息</a></div>
+					<div class="navTab preventTab" data-id="prevent"><a href="#prevent">医疗信息</a></div>
+				</div>
+
+				<!-- 郑州专版 -->
+				<div id="nm">
+					<div class="gz">
+						<a href="http://2019ncov.nosugartech.com/">【工具查询】患者相同行程查询工具</a>
+						<!-- <a href="http://t.cn/A6PIYNvD">【在线直播】河南版"小汤山"施工直播</a> -->
+						<a href="http://t.cn/A6PIeT14">【在线直播】雷神山医院施工直播</a>
+						<a href="http://t.cn/A6PIYNvD">【在线直播】火神山医院施工直播</a>
+					</div>
+					<style>
+						.gz {
+							margin-bottom: 30px;
+							text-align: center;
+							font-size: 28px;
+						}
+
+						.gz a {
+							width: 100%;
+							display: block;
+							line-height: 50px;
+							text-decoration: none;
+							color: red;
+						}
+					</style>
+					<div class="city-tab">
+						<div class="timeNum" style="margin: 0;padding: 0;width:100%;"><span class="d">截至</span><span class="qs ac-dataqs">小知识</span></div>
+						<div class="tab-top">
+							<span class="tab-name1">阜新</span>疫情速报
+						</div>
+						<div class="tab-box">
+							<div class="tab-item">
+								<div class="number add1" id="count21" style="color:#005dff">2</div>
+								<div class="text">新增病例</div>
+							</div>
+							<div class="tab-item">
+								<div class="number confirm1" id="count11" style="color:#f55253">20</div>
+								<div class="text">确诊病例</div>
+							</div>
+							<div class="tab-item">
+								<div class="number heal1" id="count31" style="color:#178b50">1</div>
+								<div class="text">治愈人数</div>
+							</div>
+							<div class="tab-item">
+								<div class="number dead1" id="count41" style="color:#66666c">0</div>
+								<div class="text">死亡人数</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- 地方页卡 -->
+					<div class="city-tab" style="margin-top: 0;">
+						<div class="tab-top">
+							<span class="tab-name">辽宁</span>疫情速报
+							<div class="city-change">
+								<select id="select-area"></select>
+							</div>
+						</div>
+						<div class="tab-box">
+							<div class="tab-item">
+								<div class="number add">0</div>
+								<div class="text">新增病例</div>
+							</div>
+							<div class="tab-item">
+								<div class="number confirm">0</div>
+								<div class="text">确诊病例</div>
+							</div>
+							<div class="tab-item">
+								<div class="number heal">0</div>
+								<div class="text">治愈人数</div>
+							</div>
+							<div class="tab-item">
+								<div class="number dead">0</div>
+								<div class="text">死亡人数</div>
+							</div>
+						</div>
+						<div class="place current" id="list"></div>
+						<div class="tab-text"></div>
+					</div>
+					<div>
+						<div class="up-tips up-gnbl">辽宁动态</div>
+						<div class="timeNum">
+							<div class="ao-tap">
+								<a style="color:#333;" href="http://3g.dxy.cn/newh5/view/pneumonia_timeline?whichFrom=dxy">更多实时报道</a>
+							</div>
+						</div>
+						<div id="dt">
+
+						</div>
+
+					</div>
+				</div>
+				<!-- 郑州专版 -->
+				<div id="charts">
+					<div class="up-tips up-gnbl">全国信息</div>
+					<div class="timeNum"><span class="d">截至</span><span class="qs ac-dataqs">小知识</span>
+					</div>
+					<div class="recentNumber">
+						<div class="icbar confirm">
+							<div class="number">0</div>
+							<div class="text">全国确诊</div>
+						</div>
+						<div class="icbar suspect">
+							<div class="number">0</div>
+							<div class="text">疑似病例</div>
+						</div>
+						<div class="icbar cure">
+							<div class="number">0</div>
+							<div class="text">治愈人数</div>
+						</div>
+						<div class="icbar dead">
+							<div class="number">0</div>
+							<div class="text">死亡人数</div>
+						</div>
+					</div>
+					<div class="marquee">
+						<div class="marquee-tab">
+							<div class="text">
+								北京、上海、安徽、湖北、湖南、广东、浙江启动重大突发公共卫生事件I级响应
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="places">
+					<img src="./img/map.png" width="100%">
+					<!-- <div class="chinamapLegend"></div> -->
+					<div class="up-tips tips-yiqing">
+						疫情新增趋势（人）
+						<div class="show-area">
+							<span class="add-confirm">新增确诊</span>
+							<span class="suspect">新增疑似</span>
+							<!-- <span class="heal">治愈</span> -->
+							<!-- <span class="dead">新增死亡</span> -->
+						</div>
+					</div>
+					<div class="lineChart china2"></div>
+					<div class="up-tips tips-yiqing">
+						疫情累计趋势（人）
+						<div class="show-area">
+							<span class="confirm">累计确诊</span>
+							<span class="suspect">累计疑似</span>
+							<!-- <span class="heal">治愈</span> -->
+							<span class="dead">累计死亡</span>
+						</div>
+					</div>
+					<div class="lineChart china"></div>
+					<div class="chianList">
+						<div class="up-tips up-gnbl">国内病例</div>
+						<div class="clearfix placeItem nav" id="placeNav">
+							<h2 class="blue">地区</h2>
+							<div class="blue">新增确诊</div>
+							<div>累计确诊</div>
+							<div>治愈</div>
+							<div>死亡</div>
+						</div>
+					</div>
+					<div class="dataTips">*数据来源于国家及各地卫健委通报</div>
+					<div class="abroadList">
+						<div class="up-tips up-gnbl">海外国家<span class="datas">确诊<span class="hw_confirm">0</span>例，死亡<span class="hw_dead">0</span>例</span></div>
+						<div class="clearfix placeItem nav abroad">
+							<h2>地区</h2>
+							<div>确诊</div>
+							<div>治愈</div>
+							<div>死亡</div>
+						</div>
+					</div>
+					<!-- 	<div class="up-haed">
+            <div class="up-area">地区</div>
+            <div class="up-confirm">确诊</div>
+            <div class="up-heal">治愈</div>
+            <div class="up-dead">死亡</div>
+          </div> -->
+				</div>
+			</div>
+
+			<!-- 最新进展 -->
+
+			<div id="news">
+				<div class="title sectionTitle">最新进展</div>
+				<div class="timeLine"></div>
+			</div>
+			<!-- 最新进展 -->
+			<!-- 辟谣信息 -->
+			<div id="rumor">
+				<div class="title sectionTitle">
+					辟谣信息
+					<a href="https://vp.fact.qq.com/home">
+						<div class="rumor_more"></div>
+					</a>
+				</div>
+				<!-- <a href="https://vp.fact.qq.com/home"> -->
+				<div class="ru-box">
+					<div id='rumor_slider' class='swiper-container'>
+						<div class='swiper-wrapper' id="piyaocon">
+						</div>
+						<div class="swiper-pagination"></div>
+					</div>
+				</div>
+				<!-- </a> -->
+			</div>
+			<!-- 医疗信息 -->
+			<div id="prevent">
+				<div class="title sectionTitle titleQg">医疗救治医院查询
+					<div class="healthIcon"></div>
+				</div>
+				<div class="foot">
+					<div class="div-hospital">
+					</div>
+					<!-- 底部预防须知 -->
+					<p class="p-fanghu">新型肺炎预防须知</p>
+					<div class="fanghu_card">
+						<div class="fanghu_title_warp">
+							<img class="fanghu_icon" src="https://puui.qpic.cn/vupload/0/1580113954413_67dj6qw9r34.png/0"></img>
+							<div class="fanghu_title">个人清洁</div>
+						</div>
+						<div class="fanghu_item">
+							<div class="fanghu_item_point"></div>
+							<div class="fanghu_item_text">经常保持双手清洁，尤其在触摸口、鼻或眼之前。</div>
+						</div>
+						<div class="fanghu_item">
+							<div class="fanghu_item_point"></div>
+							<div class="fanghu_item_text">经用洗手液和清水清洗双手，搓手最少20秒，并用纸巾擦干。</div>
+						</div>
+						<div class="fanghu_item">
+							<div class="fanghu_item_point"></div>
+							<div class="fanghu_item_text">打喷嚏或咳嗽时应用纸巾掩盖口鼻，把用过的纸巾弃置于有盖垃圾箱内，然后彻底清洁双手。</div>
+						</div>
+						<div class="fanghu_title_warp">
+							<img class="fanghu_icon" src="https://puui.qpic.cn/vupload/0/1580113954413_b3dr1w759hr.png/0"></img>
+							<div class="fanghu_title">尽量避免</div>
+						</div>
+						<div class="fanghu_item">
+							<div class="fanghu_item_point"></div>
+							<div class="fanghu_item_text">减少前往人流密集的场所。如不可避免，应戴上外科口罩。</div>
+						</div>
+						<div class="fanghu_item">
+							<div class="fanghu_item_point"></div>
+							<div class="fanghu_item_text">避免到访医院。如有必要到访医院，应佩戴外科口罩及时刻注重个人和手部卫生。</div>
+						</div>
+						<div class="fanghu_item">
+							<div class="fanghu_item_point"></div>
+							<div class="fanghu_item_text">避免接触动物（包括野味）、禽鸟或其粪便；避免到海鲜、活禽市场或农场。</div>
+						</div>
+						<div class="fanghu_item">
+							<div class="fanghu_item_point"></div>
+							<div class="fanghu_item_text">切勿进食野味及切勿光顾有提供野味的餐馆。</div>
+						</div>
+						<div class="fanghu_item">
+							<div class="fanghu_item_point"></div>
+							<div class="fanghu_item_text">注意食物安全和卫生，避免进食或饮用生或未熟透的动物产品，包括奶类、蛋类和肉类。</div>
+						</div>
+						<div class="fanghu_title_warp">
+							<img class="fanghu_icon" src="https://puui.qpic.cn/vupload/0/1580113954413_qs8jz3v8m7.png/0"></img>
+							<div class="fanghu_title">尽快就诊</div>
+						</div>
+						<div class="fanghu_item">
+							<div class="fanghu_item_point"></div>
+							<div class="fanghu_item_text">如有身体不适，特别是有发烧或咳嗽，应戴上外科口罩并尽快就诊。</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- 医疗信息 -->
+
+		</div>
+		<div class="button nav navTabs" id="moveNav"></div>
+
+		<p class="qs_mask ac_qs_mask"></p>
+		<div class="pop_qs">
+			<div class="icon_close ac_qs_close"></div>
+			<div class="h1">小知识</div>
+			<p class="h2">1. 传染源: 野生动物，可能为中华菊头蝠。</p>
+			<p class="h2">2. 病毒: 新型冠状病毒 2019-nCoV</p>
+			<p class="h2">3. 传播途径: 经呼吸道飞沫传播，亦可通过接触传播</p>
+			<p class="h2">4. 易感人群: 人群普遍易感。老年人及有基础疾病者感染后病情较重，儿童及婴幼儿也有发病</p>
+			<p class="h2">5. 潜伏期: 一般为 3~7 天，最长不超过 14 天，潜伏期内存在传染性</p>
+		</div>
+		<style>
+			* {
+				user-select: all;
+			}
+
+			.mask___1Rs2N {
+				position: fixed;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				left: 0;
+				z-index: 1024;
+				background-color: rgba(0, 0, 0, .6);
+			}
+
+			.mask___1Rs2N .hint___M89Cy {
+				position: absolute;
+				top: 120px;
+				right: 80px;
+				color: #fff;
+				font-weight: 500;
+				font-size: 26px;
+			}
+
+			.mask___1Rs2N .arrow___3Kx7L {
+				position: absolute;
+				top: 10px;
+				right: 20px;
+				width: 100px;
+				height: 100px;
+				background-image: url(//assets.dxycdn.com/gitrepo/bbs-mobile/dist/static/icon-pilot@2x.37b07556.png);
+				background-size: 100% 100%;
+			}
+		</style>
+		<script>
+			function Main() {
+
+			}
+		</script>
+		<script src="https://mat1.gtimg.com/news/images/inews/2020/feiyan/18/libs/isMobile.min.js" charset="utf-8"></script>
+		<script src="https://mat1.gtimg.com/news/images/inews/2020/feiyan/18/libs/jquery.js" charset="utf-8"></script>
+		<script src="https://mat1.gtimg.com/news/images/inews/2020/feiyan/18/libs/longpress.js" charset="utf-8"></script>
+		<script src="https://mat1.gtimg.com/news/zhishiguan/page/html2canvas.js" charset="utf-8"></script>
+		<script src="https://mat1.gtimg.com/news/images/inews/2020/feiyan/18/libs/echarts.min.js" charset="utf-8"></script>
+		<script src="https://mat1.gtimg.com/news/images/inews/2020/feiyan/18/libs/d3.csv.min.js" charset="utf-8"></script>
+		<script src="https://mat1.gtimg.com/news/images/inews/2020/feiyan/18/libs/intersection-observer.js" charset="utf-8"></script>
+		<script src="./js/intro_vp_v3.js" charset="utf-8"></script>
+		<script src="https://mat1.gtimg.com/news/images/inews/2020/feiyan/18/js/20201030/news_vp.js" charset="utf-8"></script>
+		<script src="./js/init.js"></script>
+
+	</body>
+
+</html>

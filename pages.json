@@ -1,0 +1,505 @@
+{
+	"easycom": {
+
+		"autoscan": "true",
+		"custom": {
+			"^u-(.*)": "@/uview-ui/components/u-$1/u-$1.vue",
+			"pangu-(.*)": "@/components/pangu-$1/pangu-$1.vue",
+			"fuyin-(.*)": "@/components/fuyin-$1/fuyin-$1.vue"
+		}
+
+
+	},
+	// "condition": { //模式配置，仅开发期间生效
+	// 	"current": 0, //当前激活的模式(list 的索引项)
+	// 	"list": [{
+	// 		"name": "test", //模式名称
+	// 		"path": "pages/login/login", //启动页面，必选
+	// 		"query": "uuid=c4bba940-f69e-11ea-a419-6bafda9d095e&__id__=1" //启动参数，在页面的onLoad函数里面得到
+	// 	}]
+	// },
+	"pages": [
+		//-----------------------------------------------登录模块----------------------------------------------------
+		{
+			"path": "pages/login/guide",
+			"style": {
+				"navigationBarTitleText": ""
+			}
+		},
+		{
+			"path": "pages/login/login",
+			"style": {
+				"navigationBarTitleText": "登录"
+			}
+		},
+		{
+			"path": "pages/login/findpwd",
+			"style": {
+				"navigationBarTitleText": "重置密码"
+			}
+		},
+		{
+			"path": "pages/login/register",
+			"style": {
+				"navigationBarTitleText": "注册"
+			}
+		},
+
+		//-----------------------------------------------疫情模块----------------------------------------------------//
+
+		{
+			"path": "pages/plague/query",
+			"style": {
+				"navigationBarTitleText": "疫情查询"
+			}
+		},
+		{
+			"path": "pages/fuyin_va/index",
+			"style": {
+				"navigationBarTitleText": "疫苗预约"
+			}
+		}, {
+			"path": "pages/fuyin_va/license",
+			"style": {
+				"navigationBarTitleText": "疫苗预约"
+			}
+		}, {
+			"path": "pages/fuyin_va/finish",
+			"style": {
+				"navigationBarTitleText": "疫苗预约"
+			}
+		}, {
+			"path": "pages/fuyin_va/add",
+			"style": {
+				"navigationBarTitleText": "新增"
+			}
+		}, {
+			"path": "pages/fuyin_va/edit",
+			"style": {
+				"navigationBarTitleText": "编辑"
+			}
+		}, {
+			"path": "pages/fuyin_va/list",
+			"style": {
+				"navigationBarTitleText": "列表"
+			}
+		}, {
+			"path": "pages/fuyin_va/detail",
+			"style": {
+				"navigationBarTitleText": "详情"
+			}
+		},
+		{
+			"path": "pages/fuyin_returnees/add",
+			"style": {
+				"navigationBarTitleText": "新增"
+			}
+		}, {
+			"path": "pages/fuyin_returnees/edit",
+			"style": {
+				"navigationBarTitleText": "编辑"
+			}
+		}, {
+			"path": "pages/fuyin_returnees/list",
+			"style": {
+				"navigationBarTitleText": "列表"
+			}
+		},
+		{
+			"path": "pages/fuyin_returnees/detail",
+			"style": {
+				"navigationBarTitleText": "详情"
+			}
+		},
+		//-----------------------------------------------我的模块----------------------------------------------------
+		{
+			"path": "pages/account/account",
+			"style": {
+				"navigationBarTitleText": "我的"
+			}
+		},
+		{
+			"path": "pages/ucenter/ucenter",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "uni_modules/uni-feedback/pages/uni-feedback/uni-feedback",
+			"style": {
+				"navigationBarTitleText": "问题反馈"
+			}
+		},
+		{
+			"path": "pages/ucenter/about/about",
+			"style": {
+				"navigationBarTitleText": "关于"
+					// #ifdef APP-PLUS
+					,
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"type": "share"
+						}]
+					}
+				}
+				// #endif
+			}
+
+		},
+		{
+			"path": "uni_modules/uni-agree/pages/uni-agree/uni-agree",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"popGesture": "none"
+				}
+			}
+		},
+		{
+			"path": "pages/ucenter/settings/settings",
+			"style": {
+				"navigationBarTitleText": "设置"
+			}
+
+		},
+		{
+			"path": "pages/ucenter/userinfo/userinfo",
+			"style": {
+				"navigationBarTitleText": "个人资料"
+			}
+		},
+		{
+			"path": "pages/ucenter/userinfo/userinfoimage",
+			"style": {
+				"navigationBarTitleText": "修改头像"
+			}
+		},
+		{
+			"path": "pages/ucenter/userinfo/cropImage",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/ucenter/login-page/pwd-retrieve/pwd-retrieve",
+			"style": {
+				"navigationBarTitleText": "重置密码"
+			}
+		},
+		{
+			"path": "pages/ucenter/read-news-log/read-news-log",
+			"style": {
+				"navigationBarTitleText": "阅读记录",
+				"enablePullDownRefresh": true
+			}
+		},
+		//-----------------------------------------------活动模块----------------------------------------------------//
+		{
+			"path": "pages/activity/details",
+			"style": {
+				"navigationBarTitleText": "投票"
+			}
+		},
+		{
+			"path": "pages/activity/vote",
+			"style": {
+				"app-plus": {
+					"titleNView": {
+						"backgroundColor": "#FF4500",
+						"padding-right": "6px",
+						"searchInput": {
+							"borderRadius": "15px",
+							"placeholder": "搜索作品标题"
+						},
+						"buttons": [{
+							"text": "搜索",
+							"fontSize": "16px",
+							"width": "48px"
+						}]
+					}
+				}
+			}
+		},
+		//-----------------------------------------------考试模块----------------------------------------------------//
+		{
+			"path": "pages/exam/examset",
+			"style": {
+				"navigationBarTitleText": "考试管理"
+			}
+		},
+		{
+			"path": "pages/exam/examtest",
+			"style": {
+				"navigationBarTitleText": "练习"
+			}
+		},
+		{
+			"path": "pages/exam/examtestselect",
+			"style": {
+				"navigationBarTitleText": "学习类型选择"
+			}
+		},
+		{
+			"path": "pages/exam/examselect",
+			"style": {
+				"navigationBarTitleText": "考试场次选择"
+			}
+		},
+		{
+			"path": "pages/exam/grade",
+			"style": {
+				"navigationBarTitleText": "我的成绩"
+			}
+		},
+		{
+			"path": "pages/account/setting",
+			"style": {
+				"navigationBarTitleText": "个人信息修改"
+			}
+		},
+		{
+			"path": "pages/exam/exam",
+			"style": {
+				"navigationBarTitleText": "考试"
+			}
+		},
+		//-----------------------------------------------新闻模块----------------------------------------------------//
+		{
+			"path": "pages/news/news",
+			"style": {
+				"app-plus": {
+					"titleNView": {
+						// "backgroundImage": "linear-gradient(to top left, #a80077, #66ff00)",
+						"backgroundColor": "#00BFFF",
+						"padding-right": "6px",
+						"searchInput": {
+							"borderRadius": "15px",
+							"placeholder": "输入要搜索内容"
+						},
+						"buttons": [{
+							"text": "搜索",
+							"fontSize": "16px",
+							"width": "48px"
+						}]
+					}
+				}
+			}
+		},
+		{
+			"path": "pages/news/newsdetails",
+			"style": {
+				"navigationBarTitleText": "新闻详情"
+			}
+		},
+		//-----------------------------------------------短视频模块----------------------------------------------------//
+		{
+			"path": "pages/video/videolist",
+			"style": {
+				"navigationBarTitleText": "福音"
+			}
+		},
+		{
+			"path": "pages/video/shortvideo",
+			"style": {
+				"navigationBarTitleText": "swiper",
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false,
+					"subNVues": [{
+						"id": "comment",
+						"path": "pages/video/comment",
+						"style": {
+							"height": "100%",
+							"position": "absolute",
+							"bottom": "0",
+							"background": "transparent",
+							"zindex": 1
+						}
+					}, {
+						"id": "input-box",
+						"path": "pages/video/input-box",
+						"style": {
+							"height": "100%",
+							"position": "absolute",
+							"bottom": "0",
+							"background": "transparent",
+							"zindex": 2
+						}
+					}]
+				}
+			}
+		},
+		//-----------------------------------------------舆情模块----------------------------------------------------//			
+		{
+			"path": "pages/opinion/category",
+			"style": {
+				"navigationBarTitleText": "关键词查看"
+			}
+		},
+		{
+			"path": "pages/opinion/keyform",
+			"style": {
+				"navigationBarTitleText": "关键词修改"
+			}
+		},
+		{
+			"path": "pages/opinion/opinion",
+			"style": {
+				"navigationBarTitleText": "舆情信息"
+			}
+		},
+		{
+			"path": "pages/opinion/webview",
+			"style": {
+				"navigationBarTitleText": "舆情查看"
+			}
+		},
+		//-----------------------------------------------通用模块----------------------------------------------------//			
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "首页"
+			}
+		},
+		{
+			"path": "pages/common/webview/webview",
+			"style": {
+				"app-plus": {
+					"titleNView": {
+						// "titleColor": "#",
+						// "backgroundColor": "#00BFFF",
+						"backgroundColor": "#007AFF",
+						"buttons": [{
+							"fontSrc": "/static/uni.ttf",
+							// "text": "\ue537",
+							"text": "\ue537",
+							"width": "40px",
+							"fontSize": "28px",
+							"color": "#000000",
+							"background": "rgba(0,0,0,0)"
+						}]
+						}
+						,
+						"subNVues": [{
+							"id": "drawer",
+							"path": "pages/common/webview/subnvue/drawer",
+							"type": "popup",
+							"style": {
+								"width": "50%"
+							}
+						}]
+					}
+				}
+			},
+			{
+				"path": "uni_modules/uni-upgrade-center-app/pages/upgrade-popup",
+				"style": {
+					"disableScroll": true,
+					"app-plus": {
+						"backgroundColorTop": "transparent",
+						"background": "transparent",
+						"titleNView": false,
+						"scrollIndicator": false,
+						"popGesture": "none",
+						"animationType": "fade-in",
+						"animationDuration": 200
+
+					}
+				}
+			},
+			//-----------------------------------------------直播模块----------------------------------------------------//		
+			{
+				"path": "pages/livebroadcast/TV/index",
+				"style": {
+					"navigationBarTitleText": "直播间列表"
+				}
+			},
+			{
+				"path": "pages/livebroadcast/TV/TV",
+				"style": {
+					"navigationBarTitleText": "直播"
+				}
+			},
+			{
+				"path": "pages/livebroadcast/push_weex",
+				"style": {
+					"navigationBarTitleText": "",
+					"enablePullDownRefresh": false,
+					"navigationStyle": "custom",
+					"app-plus": {
+						"subNVues": [{
+							"id": "push-logs", // 唯一标识  
+							"path": "pages/livebroadcast/logs", // 页面路径  
+							"type": "popup",
+							"style": {
+								"position": "absolute",
+								"top": "0upx",
+								"width": "100%",
+								"height": "100%",
+								"background": "transparent"
+							}
+						}, {
+							"id": "push-btngroup", // 唯一标识  
+							"path": "pages/livebroadcast/btngroup", // 页面路径  
+							/*"type": "popup",  这里不需要*/
+							"style": {
+								"position": "absolute",
+								"bottom": "0upx",
+								"width": "100%",
+								"height": "200upx",
+								"background": "transparent"
+							}
+						}]
+					}
+				}
+			},
+			{
+				"path": "pages/livebroadcast/push_config",
+				"style": {
+					"navigationBarTextStyle": "black",
+					"navigationBarTitleText": "",
+					"navigationBarBackgroundColor": "#F8F8F8",
+					"backgroundColor": "#F8F8F8",
+					"navigationStyle": "custom"
+				}
+			}
+		],
+		// "preloadRule" : {
+		//     "pages/example/components" : {
+		//         "network" : "all",
+		//         "packages" : [ "pages/componentsA", "pages/componentsB", "pages/componentsC" ]
+		//     }
+		// },
+		"globalStyle": {
+			"navigationBarTextStyle": "black",
+			"navigationBarTitleText": "uView",
+			"navigationBarBackgroundColor": "#FFFFFF",
+			"backgroundColor": "#FFFFFF"
+		},
+		"tabBar": {
+			"list": [{
+					"pagePath": "pages/news/news",
+					"text": "资讯"
+				},
+				// {
+				// 	"pagePath": "pages/news/news",
+				// 	"text": "新闻"
+				// },
+				{
+					"pagePath": "pages/video/videolist",
+					"text": "视频"
+				},
+
+				{
+					"pagePath": "pages/index/index",
+					"text": "首页"
+				},
+				{
+					"pagePath": "pages/account/account",
+					"text": "我的"
+				}
+
+			]
+		}
+	}

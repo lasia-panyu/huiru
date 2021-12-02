@@ -1,0 +1,158 @@
+{
+	"bsonType": "object",
+	"required": ["name", "mobile", "idcard_type", "idcard", "department_id", "from_abroad", "address-home-type",
+		"address-work-type", "vaccine-status", "status"
+	],
+	"permission": {
+		"read": false,
+		"create": true,
+		"update": false,
+		"delete": false
+	},
+	"properties": {
+		"_id": {
+			"description": "ID，系统自动生成"
+		},
+		"name": {
+			"bsonType": "string",
+			"title": "姓名",
+			"minLength": 2,
+			"trim": "both"
+		},
+		"mobile": {
+			"bsonType": "string",
+			"title": "手机号码",
+			"pattern": "^\\+?[0-9-]{3,20}$",
+			"trim": "both"
+		},
+		"idcard_type": {
+			"bsonType": "int",
+			"title": "证件类型",
+			"enum": [{
+				"text": "身份证",
+				"value": 0
+			}, {
+				"text": "护照",
+				"value": 1
+			}, {
+				"text": "军官证",
+				"value": 2
+			}, {
+				"text": "港澳身份证",
+				"value": 3
+			}],
+			"defaultValue": 0
+		},
+		"idcard": {
+			"bsonType": "string",
+			"title": "证件号码",
+			"trim": "both"
+		},
+		"from_abroad": {
+			"bsonType": "int",
+			"title": "户籍",
+			"enum": [{
+				"text": "本市户籍",
+				"value": 0
+			}, {
+				"text": "外省户籍",
+				"value": 1
+			}, {
+				"text": "港澳台",
+				"value": 2
+			}, {
+				"text": "外国籍",
+				"value": 3
+			}]
+		},
+		"department_id": {
+			"bsonType": "array",
+			"description": "部门ID",
+			"title": "部门",
+			"enumType": "tree",
+			"enum": {
+				"collection": "opendb-department",
+				"orderby": "name asc",
+				"field": "_id as value, name as text"
+			}
+		},
+		"address_home_type": {
+			"bsonType": "int",
+			"title": "现居住地",
+			"enum": [{
+				"text": "本区",
+				"value": 0
+			}, {
+				"text": "外区",
+				"value": 1
+			}]
+		},
+		"address_home": {
+			"bsonType": "string",
+			"title": "现居住地详细地址",
+			"minLength": 3,
+			"trim": "both"
+		},
+		"address_work_type": {
+			"bsonType": "int",
+			"title": "现工作地",
+			"enum": [{
+				"text": "本区",
+				"value": 0
+			}, {
+				"text": "外区",
+				"value": 1
+			}]
+		},
+		"address_work": {
+			"bsonType": "string",
+			"title": "工作地详细地址",
+			"minLength": 3,
+			"trim": "both"
+		},
+		"vaccine_status": {
+			"bsonType": "int",
+			"title": "接种疫苗状态",
+			"enum": [{
+				"text": "未接种过新冠疫苗",
+				"value": 0
+			}, {
+				"text": "已接种第一针新冠疫苗",
+				"value": 1
+			}, {
+				"text": "已接种第二针新冠疫苗",
+				"value": 2
+			}]
+		},
+		"status": {
+			"bsonType": "int",
+			"title": "预约记录状态",
+			"defaultValue": 0,
+			"enum": [{
+				"text": "已预约",
+				"value": 0
+			}, {
+				"text": "已通知",
+				"value": 1
+			}, {
+				"text": "已失效",
+				"value": 2
+			}]
+		},
+		"comment": {
+			"bsonType": "string",
+			"title": "备注",
+			"trim": "both",
+			"componentForEdit": {
+				"name": "textarea"
+			}
+		},
+		"create_time": {
+			"bsonType": "timestamp",
+			"title": "创建时间",
+			"forceDefaultValue": {
+				"$env": "now"
+			}
+		}
+	}
+}

@@ -1,0 +1,129 @@
+.hm-sms-list-card {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  height:  100%;
+}
+
+.box {
+  display: flex;
+  position: relative;
+  align-items: flex-start;
+  flex-direction: row;
+  justify-content: center;
+  margin-left: 0rpx;
+  border-radius: 32.21rpx;
+  background-color: #ffffff;
+  width: 100%;
+  height:  100%;
+  overflow: hidden;
+}
+/* 
+.xueshengdangan {
+  position: absolute;
+  top: 66.72rpx;
+  left: 69.02rpx;
+  width: 82.82rpx;
+  height: 110.43rpx;
+}
+
+.primary {
+  position: relative;
+  margin-top: 46.01rpx;
+  margin-right: 34.51rpx;
+  width: 128.83rpx;
+  height: 115.03rpx;
+} */
+
+.sub {
+  display: flex;
+  position: relative;
+  align-items: flex-start;
+  flex-direction: column;
+  margin-left: 0rpx;
+  margin-top: 36.81rpx;
+  margin-right: 29.91rpx;
+  height: 112.73rpx;
+  width: 80%;
+}
+
+.outer {
+  display: flex;
+  position: relative;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  height: 50.61rpx;
+}
+
+.wrap {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  height: 46.01rpx;
+}
+
+.paybak {
+  opacity: 1;
+/*  max-width: 220.86rpx; */
+  height: 46.01rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 46.01rpx;
+  white-space: pre;
+  color: #34c1fe;
+  font-family: Helvetica;
+  font-size: 32.21rpx;
+  font-weight: normal;
+}
+
+.company {
+  opacity: 1;
+/*  max-width: 80.52rpx; */
+  height: 46.01rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 46.01rpx;
+  white-space: nowrap;
+  color: #34c1fe;
+  font-size: 32.21rpx;
+  font-weight: 400;
+}
+
+.txt {
+  opacity: 1;
+  line-height: 46.01rpx;
+  white-space: pre;
+  color: #b3c0ce;
+  font-family: MicrosoftYaHei, Microsoft YaHei;
+  font-size: 25.31rpx;
+  font-weight: normal;
+}
+
+.block {
+  display: flex;
+  position: relative;
+  align-items: center;
+  flex-direction: row;
+  margin-top: 16.1rpx;
+  height: 46.01rpx;
+}
+
+.desc {
+  opacity: 1;
+  line-height: 46.01rpx;
+  white-space: nowrap;
+  color: #15232e;
+  font-size: 25.31rpx;
+  font-weight: 400;
+}
+
+.side {
+  position: relative;
+  margin-top: 46.01rpx;
+  margin-right: 0;
+  width: 16.1rpx;
+  height: 27.61rpx;
+}

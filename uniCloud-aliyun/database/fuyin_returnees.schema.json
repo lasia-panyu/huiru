@@ -1,0 +1,220 @@
+{
+	"bsonType": "object",
+	"required": ["name", "mobile", "address", "from_abroad", "from_address", "status"],
+	"permission": {
+		"read": false,
+		"create": true,
+		"update": false,
+		"delete": false
+	},
+	"properties": {
+		"_id": {
+			"description": "ID，系统自动生成"
+		},
+		"name": {
+			"bsonType": "string",
+			"title": "姓名",
+			"minLength": 2,
+			"trim": "both"
+		},
+		"mobile": {
+			"bsonType": "string",
+			"title": "手机号码",
+			"pattern": "^\\+?[0-9-]{3,20}$",
+			"trim": "both"
+		},
+		"idcard_type": {
+			"bsonType": "int",
+			"title": "证件类型",
+			"enum": [{
+					"text": "身份证",
+					"value": 0
+				},
+				{
+					"text": "护照",
+					"value": 1
+				},
+				{
+					"text": "军官证",
+					"value": 2
+				},
+				{
+					"text": "港澳身份证",
+					"value": 3
+				}
+			],
+			"defaultValue": 0
+		},
+		"idcard": {
+			"bsonType": "string",
+			"title": "证件号码",
+			"trim": "both"
+		},
+		"address": {
+			"bsonType": "string",
+			"title": "本地住址",
+			"minLength": 3,
+			"trim": "both"
+		},
+		"from_abroad": {
+			"bsonType": "bool",
+			"title": "是否来自国外",
+			"defaultValue": false
+			// "enum":[
+			// 	{"text":"是","value":true,"hiddenProperties":["province_code","city_code","area_code"]},
+			// 	{"text":"否","value":false}
+			// ]
+		},
+		"province_code": {
+			"bsonType": "string",
+			"description": "省级编码，冗余存储",
+			"display": "from_abroad==true"
+		},
+		"city_code": {
+			"bsonType": "string",
+			"description": "地级编码，冗余存储"
+		},
+		"area_code": {
+			"bsonType": "string",
+			"description": "区级编码",
+			"title": "来源地省市区",
+			"enumType": "tree",
+			"enum": {
+				"collection": "opendb-city-china",
+				"orderby": "value asc",
+				"field": "code as value, name as text, eq(type, 2) as isleaf"
+			},
+			"foreignKey": "opendb-city-china.code"
+		},
+		"from_address": {
+			"bsonType": "string",
+			"title": "来源地地址",
+			"minLength": 3,
+			"trim": "both"
+		},
+		"transport": {
+			"bsonType": "int",
+			"title": "交通工具类型",
+			"enum": [{
+					"text": "飞机",
+					"value": 0
+				},
+				{
+					"text": "火车",
+					"value": 1
+				},
+				{
+					"text": "长途汽车",
+					"value": 2
+				},
+				{
+					"text": "自驾",
+					"value": 3
+				},
+				{
+					"text": "轮船",
+					"value": 4
+				}
+			]
+		},
+		"transport_no": {
+			"bsonType": "string",
+			"title": "交通工具班次",
+			"description": "飞机航班,火车车次,汽车班次,自驾车牌等",
+			"trim": "both"
+		},
+		"status": {
+			"bsonType": "int",
+			"title": "状态",
+			"enum": [{
+					"text": "居家隔离",
+					"value": 0
+				},
+				{
+					"text": "集中隔离",
+					"value": 1
+				},
+				{
+					"text": "解除隔离",
+					"value": 2
+				},
+				{
+					"text": "送医",
+					"value": 3
+				},
+				{
+					"text": "出院居家隔离",
+					"value": 4
+				},
+				{
+					"text": "康复",
+					"value": 5
+				},
+				{
+					"text": "死亡",
+					"value": 6
+				}
+			]
+		},
+		"comment": {
+			"bsonType": "string",
+			"title": "备注",
+			"trim": "both",
+			"componentForEdit": {
+				"name": "textarea"
+			}
+		},
+		"create_time": {
+			"bsonType": "timestamp",
+			"title": "创建时间",
+			"forceDefaultValue": {
+				"$env": "now"
+			}
+		},
+		"Health_code": {
+			"bsonType": "int",
+			"title": "健康码颜色",
+			"enum": [{
+					"text": "绿色",
+					"value": 0
+				},
+				{
+					"text": "黄色",
+					"value": 1
+				},
+				{
+					"text": "红色",
+					"value": 2
+				}
+			]
+		},
+		"na_test_time": {
+			"bsonType": "timestamp",
+			"title": "核酸检测时间",
+			"minimum": 1609430400000 //2021-1-1的时间戳
+		},
+		"na_test_result": {
+			"bsonType": "int",
+			"title": "核酸检测结果",
+			"enum": [{
+					"text": "阴性",
+					"value": 0
+				},
+				{
+					"text": "阳性",
+					"value": 1
+				}
+			]
+		},
+		"temperature": {
+			"bsonType": "double",
+			"title": "体温",
+			"minimum": 36.0,
+			"maximum": 40
+		},
+		"cough": {
+			"bsonType": "bool",
+			"title": "是否咳嗽"
+		}
+	}
+}
